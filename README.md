@@ -63,6 +63,38 @@ To open with a particular monitor preselected, pass
 
 After you stop a wallpaper, your regular Omarchy background shows again.
 
+### Temporarily disable Wallpaper Engine
+
+To temporarily stop Wallpaper Engine while keeping the current monitor
+assignments:
+
+```bash
+./wpe.sh disable
+```
+
+Enable it again and restore the saved assignments with:
+
+```bash
+./wpe.sh enable
+```
+
+Or toggle between the two states:
+
+```bash
+./wpe.sh toggle
+```
+
+When disabled, Wallpaper Engine renderers are stopped and the normal Omarchy
+background remains visible. The saved monitor assignments are preserved, so
+enabling Wallpaper Engine restores the previous configuration.
+
+Keybindings are not modified automatically by the plugin. With Omarchy's
+current Lua-based Hyprland configuration, for example:
+
+```lua
+o.bind("SUPER + SHIFT + J", "Toggle Wallpaper Engine", "~/.config/omarchy/plugins/lbarto12.omarchy-wpe/wpe.sh toggle")
+```
+
 ## Configuration
 
 Optional. Create `~/.config/omarchy-wpe/config`:
@@ -119,6 +151,19 @@ Some wallpapers, notably many `web` ones, only fail once they start. If the
 renderer exits within two seconds of applying one, the plugin puts your
 previous wallpaper back and shows the error in the picker. The failed run's
 output is kept in `~/.local/state/omarchy-wpe/wpe-failed.log`.
+
+## Tests
+
+Run the regression tests from the repository root:
+
+```bash
+./wpe-toggle-tests.sh
+```
+
+The suite checks shell syntax and help output, persistent disable/enable/toggle
+state, the disabled status returned by `list`, re-enabling by choosing a
+wallpaper in the picker, and restoring a prior disabled state if applying a
+wallpaper fails. It uses stubs and does not start a real wallpaper renderer.
 
 ## Removal
 
